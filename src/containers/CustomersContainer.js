@@ -1,29 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import AppFrame from '../components/AppFrame';
-import { Link, withRouter } from 'react-router-dom';
 import CustomerList from './../components/CustomerList';
 import CustomerActions from '../components/CustomerActions';
-
-const customers = [
-    {
-        'dni': '27000000',
-        'name': 'Juan Perez',
-        'age': 35
-    },
-    {
-        'dni': '30000000',
-        'name': 'Luis Gonzalez',
-        'age': 32
-    },
-    {
-        'dni': '18000000',
-        'name': 'Maria Rubio',
-        'age': 30
-    },
-];
+import { fetchCustomers } from '../actions/fetchCustomers'
 
 class CustomersContainer extends Component {
+    componentDidMount() {
+        this.props.fetchCustomers();
+    }
+    
+    addNew = () => {
+        this.props.history.push('/customers/new');
+    }
+
     renderBody = (customers) => (
         <div>
             <CustomerList 
@@ -41,7 +34,7 @@ class CustomersContainer extends Component {
             <div>
                 <AppFrame 
                     header={'Listado de clientes'}
-                    body={this.renderBody(customers)}>
+                    body={this.renderBody(this.props.customers)}>
                 </AppFrame>
             </div>
         );
@@ -49,7 +42,18 @@ class CustomersContainer extends Component {
 }
 
 CustomersContainer.propTypes = {
-
+    fetchCustomers: PropTypes.func.isRequired,
+    customers: PropTypes.array.isRequired,
 };
 
-export default withRouter(CustomersContainer);
+CustomersContainer.defaultProps = {
+    customers: []
+};
+
+const mapDispatchToProps = { fetchCustomers };
+
+const mapStateToProps = state => ({
+    customers: state.customers
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomersContainer));
