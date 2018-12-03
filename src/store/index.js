@@ -1,5 +1,8 @@
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import promiseMiddleware from 'redux-promise';
 
 import reducers from '../reducers';
 
-export const store = createStore(reducers, {});
+const composeEnhacers = compose;
+
+export const store = createStore(reducers, {}, composeEnhacers(applyMiddleware(promiseMiddleware)));
