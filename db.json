@@ -1,26 +1,30 @@
 {
   "customers": [
     {
-        "dni": "27000000",
-        "name": "Juan Perez",
-        "age": 28
+      "id": "27000000",
+      "dni": "27000001",
+      "name": "JUAN PEREZ",
+      "age": 25
     },
     {
-        "dni": "30000000",
-        "name": "Luis Gonzalez",
-        "age": 32
+      "id": "30000000",
+      "dni": "30000000",
+      "name": "Miguel Gonzales",
+      "age": 32
     },
     {
-        "dni": "37000000",
-        "name": "Manuel García",
-        "age": 34
+      "id": "37000000",
+      "dni": "37000000",
+      "name": "Lucía García",
+      "age": 21
     },
     {
-        "dni": "18000000",
-        "name": "Maria Rubio",
-        "age": 30
+      "id": "18000000",
+      "dni": "18000000",
+      "name": "Maria Rubio",
+      "age": 30
     }
-],
+  ],
   "posts": [
     {
       "id": 1,
