@@ -1,13 +1,6 @@
 {
   "customers": [
     {
-      "id": "37000000",
-      "dni": "37000002",
-      "name": "LUCÍA GARCÍA",
-      "age": 21,
-      "editing": true
-    },
-    {
       "name": "MARTIN TOMAS",
       "dni": "25000000",
       "age": 21,
