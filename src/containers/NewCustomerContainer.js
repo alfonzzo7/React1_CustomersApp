@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import AppFrame from './../components/AppFrame';
 import CustomerEdit from './../components/CustomerEdit';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { insertCustomers } from './../actions/insertCustomers';
 
 class NewCustomerContainer extends Component {
     handleSubmit = values => {
         // console.log(JSON.stringify(values));
-        const {id} = values;
-        return this.props.updateCustomers(id, values).then(res => {
+        return this.props.insertCustomers(values).then(res => {
             if (res.error) {
                 throw new SubmissionError(res.payload);
             }
@@ -46,7 +46,7 @@ class NewCustomerContainer extends Component {
 }
 
 NewCustomerContainer.propTypes = {
-
+    insertCustomers: PropTypes.func.isRequired,
 };
 
-export default withRouter(connect(null, null)(NewCustomerContainer));
+export default withRouter(connect(null, {insertCustomers})(NewCustomerContainer));

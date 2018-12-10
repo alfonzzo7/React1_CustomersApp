@@ -10,6 +10,7 @@ import CustomerEdit from './../components/CustomerEdit';
 import CustomerData from './../components/CustomerData';
 import { fetchCustomers } from './../actions/fetchCustomers';
 import { updateCustomers } from './../actions/updateCustomers';
+import { deleteCustomers } from './../actions/deleteCustomers';
 
 class CustomerContainer extends Component {
     componentDidMount() {
@@ -28,6 +29,10 @@ class CustomerContainer extends Component {
         });
     }
 
+    handleOnDelete = (id) => {
+        this.props.deleteCustomers(id).then(res => this.props.history.goBack());
+    }
+
     handleOnBack = () => {
         this.props.history.goBack();
     }
@@ -36,16 +41,29 @@ class CustomerContainer extends Component {
         this.props.history.goBack();
     }
 
+    renderCustomerControl = (isEdit, isDelete) => {
+        if (this.props.customer) {
+            const CustomerControl = isEdit ? CustomerEdit : CustomerData;
+            return <CustomerControl {...this.props.customer} 
+                        onSubmit={this.handleSubmit}
+                        onSubmitSuccess={this.handleOnSubmitSuccess}
+                        onBack={this.handleOnBack}
+                        isDeleteAllow={!!isDelete}
+                        onDelete={this.handleOnDelete} />
+        }
+
+        return null;
+    }
+
     renderBody = () => (
         <Route path="/customers/:dni/edit" children={
-            ({match}) => {
-                const CustomerControl = match ? CustomerEdit : CustomerData;
-                return <CustomerControl {...this.props.customer} 
-                            onSubmit={this.handleSubmit}
-                            onSubmitSuccess={this.handleOnSubmitSuccess}
-                            onBack={this.handleOnBack} />
-            }
-        }
+            ({match: isEdit}) => (
+                <Route path="/customers/:dni/del" children={
+                    ({match: isDelete}) => (
+                        this.renderCustomerControl(isEdit, isDelete)
+                    )
+                }/>
+            )}
         />
     );
 
@@ -68,12 +86,13 @@ CustomerContainer.propTypes = {
     customer: PropTypes.object,
     fetchCustomers: PropTypes.func.isRequired,
     updateCustomers: PropTypes.func.isRequired,
+    deleteCustomers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
     customer: getCustomerByDni(state, props)
 });
 
-const mapDispatchToProps = { fetchCustomers, updateCustomers };
+const mapDispatchToProps = { fetchCustomers, updateCustomers, deleteCustomers };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomerContainer));
